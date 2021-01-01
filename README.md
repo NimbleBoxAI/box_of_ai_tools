@@ -6,4 +6,6 @@
 - Semantic segmentation
 - Human Pose Estimation
 - Activity Recognition 
+  - Action Recognition
+  - Multimodal Activity recognition 
 - Text Recognition 
