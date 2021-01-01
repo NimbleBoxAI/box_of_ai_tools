@@ -1,2 +1,9 @@
-# box_of_ai_tools
-Model Repository for Intel's Engineers Box of AI Tools 
+## Box of AI Tools
+
+### Type of Models
+- Object Detection
+- Image Classification
+- Semantic segmentation
+- Human Pose Estimation
+- Activity Recognition 
+- Text Recognition 
