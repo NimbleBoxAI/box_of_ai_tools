@@ -1,0 +1,4 @@
+[submodule "Object_Detection/YOLO v4/ScaledYOLOv4"]
+	path = Object_Detection/YOLO v4/ScaledYOLOv4
+	url = https://github.com/WongKinYiu/ScaledYOLOv4.git
+	branch = yolov4-large

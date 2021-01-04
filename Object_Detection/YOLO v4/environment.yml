@@ -1,0 +1,15 @@
+name: yolov4
+channels:
+  - pytorch
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - ipykernel=5.3.4=py38h5ca1d4c_0
+  - pip=20.3.3=pyhd8ed1ab_0
+  - python=3.8.6=hffdb5ce_4_cpython
+  - pytorch=1.7.1=py3.8_cuda11.0.221_cudnn8.0.5_0
+  - pip:
+    - git+https://github.com/cshubhamrao/mish-cuda.git
+    - pyyaml
+    - gdown
