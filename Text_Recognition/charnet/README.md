@@ -1,3 +1,6 @@
+### Original Project [Repository](https://github.com/MalongTech/research-charnet)
+
+This is a modified readme of original project
 # Convolutional Character Networks
 
 This project hosts the testing code for CharNet, described in our paper:
@@ -9,20 +12,25 @@ This project hosts the testing code for CharNet, described in our paper:
    
 ## Installation
 
-```
-pip install torch torchvision
-python setup.py build develop
+```bash
+conda create -n charnet python=3.7
+conda activate charnet
+pip3 install torch torchvision
+cd into the charnet directory
+pip3 install -r requirements.txt
+python3 setup.py build develop
 ```
 
 
 ## Run
 1. Please run `bash download_weights.sh` to download our trained weights. 
-2. For ICDAR 2015, please run the following command line. Please replace `images_dir` with the directory containing ICDAR 2015 testing images. The results will be in `results_dir`.
+2. Put images to test in the input_dir and the results will be saved in the output_dir. 
+3. then just run: 
 
+    ```bash
+    python3 tools/test.py
     ```
-    python tools/test_net.py configs/icdar2015_hourglass88.yaml <images_dir> <results_dir>
-    ```
-
+4. Runs on CPU by default.
 
 ## Citation
 
