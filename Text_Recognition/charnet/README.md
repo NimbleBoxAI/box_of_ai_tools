@@ -1,6 +1,6 @@
 ### Original Project [Repository](https://github.com/MalongTech/research-charnet)
 
-This is a modified readme of original project
+This is a modified readme of the original project
 # Convolutional Character Networks
 
 This project hosts the testing code for CharNet, described in our paper:
