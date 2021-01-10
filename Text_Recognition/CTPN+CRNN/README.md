@@ -1,3 +1,5 @@
+# Link to Authors [Repository](https://github.com/courao/ocr.pytorch)
+
 ## ocr.pytorch
 > A pure pytorch implemented ocr project.    
 Text detection is based CTPN and text recognition is based CRNN.  
