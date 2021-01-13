@@ -1,7 +1,16 @@
 ## Requirments
 1. Anaconda.
 2. linux distro(ubuntu or debian derivatives).
-3. Run `run.sh` for for complete setup, instructions and demo. 
+3. git
+
+## Instructions 
+```bash
+conda create env -n masktextspotter python=3.7
+conda activate masktextspotter
+chmod +x run.sh
+./run.sh
+```
+ 
 
 
 # Original [Repository](https://github.com/MhLiao/MaskTextSpotter) 
