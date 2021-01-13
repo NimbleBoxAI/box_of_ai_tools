@@ -1,6 +1,7 @@
 ## Requirments
 1. Anaconda.
 2. linux distro(ubuntu or debian derivatives).
+3. git
 
 ## Instructions 
 ```bash
