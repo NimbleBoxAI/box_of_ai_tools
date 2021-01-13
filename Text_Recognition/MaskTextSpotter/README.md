@@ -5,7 +5,7 @@
 
 ## Instructions 
 ```bash
-conda create env -n masktextspotter python=3.7
+conda create env -n masktextspotter
 conda activate masktextspotter
 chmod +x run.sh
 ./run.sh
