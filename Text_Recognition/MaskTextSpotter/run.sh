@@ -1,13 +1,8 @@
-#!/bin/bash
-
-conda create --name masktextspotter -y
-conda activate masktextspotter
-
 # this installs the right pip and dependencies for the fresh python
 conda install ipython pip -y 
 
 # python dependencies
-pip install ninja yacs cython matplotlib tqdm opencv-python shapely scipy tensorboardX -y 
+pip install ninja yacs cython matplotlib tqdm opencv-python shapely scipy tensorboardX
 
 # install PyTorch
 conda install pytorch torchvision cudatoolkit=10.0 -c pytorch -y
