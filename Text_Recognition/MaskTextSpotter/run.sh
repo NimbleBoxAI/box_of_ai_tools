@@ -1,3 +1,5 @@
+
+#!/bin/bash
 # this installs the right pip and dependencies for the fresh python
 conda install ipython pip -y 
 
@@ -26,6 +28,8 @@ unset INSTALL_DIR
 echo "download the pretrained model and put it in the MaskTextSpotter dir, Link to model: https://drive.google.com/file/d/1pPRS7qS_K1keXjSye0kksqhvoyD0SARz/view "
 echo "Now put your images in the demo_images folder and press any key to see the demo."
 while [ true ] ; do 
-  read -t 3 -n 1
+read -t 3 -n 1
 if [ $? = 0 ] ; then 
-  python tools/demo.py 
+python tools/demo.py
+fi
+done 
