@@ -5,8 +5,10 @@
 
 ## Instructions 
 ```bash
-conda create env -n masktextspotter python=3.7
+conda create env -n masktextspotter
 conda activate masktextspotter
+git clone https://github.com/NimbleBoxAI/box_of_ai_tools.git
+cd box_of_ai_tools/Text_Recognition/MaskTextSpotter
 chmod +x run.sh
 ./run.sh
 ```
