@@ -1,0 +1,9 @@
+numpy==1.19.4
+matplotlib==3.3.3
+pyclipper==1.2.1
+torchvision==0.8.2
+torch==1.7.1
+editdistance==0.5.3
+yacs==0.1.8
+opencv_python==4.5.1.48
+Shapely==1.7.1
