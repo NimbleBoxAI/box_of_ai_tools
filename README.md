@@ -3,12 +3,12 @@
 ### Type of Models
 - Object Detection
 - Image Classification
-- Semantic segmentation (**Runs on OpenVino**)
-  - [x] FPN
-  - [x] LinkNet
-  - [x] PAN
+- Semantic segmentation
+  - [x] FPN (**Runs on OpenVino**)
+  - [x] LinkNet (**Runs on OpenVino**)
+  - [x] PAN (**Runs on OpenVino**)
   - [x] PSPNet
-  - [x] U-net
+  - [x] U-net (**Runs on OpenVino**)
 - Human Pose Estimation
   - [x] EfficientPose (`IV` and `RT`)
   - [x] MSPN
