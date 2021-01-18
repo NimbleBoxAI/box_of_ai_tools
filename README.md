@@ -20,3 +20,6 @@
     - [x] MARS+RGB+Flow
   - Multimodal Activity recognition
 - Text Recognition
+  - [x] CTPN + CRNN
+  - [x] MaskTextSpotter
+  - [x] Charnet
