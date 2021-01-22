@@ -2,9 +2,6 @@
 
 ### Type of Models
 - Image Classification (All models support OpenVino)
-  - [x] FPN 
-  - [x] LinkNet 
-  - [x] PAN
   - [x] ResNet18
   - [x] ResNet34
   - [x] ResNet50
