@@ -1,8 +1,31 @@
 ## Box of AI Tools
 
 ### Type of Models
+- Image Classification (All models support OpenVino)
+  - [x] FPN 
+  - [x] LinkNet 
+  - [x] PAN
+  - [x] ResNet18
+  - [x] ResNet34
+  - [x] ResNet50
+  - [x] ResNet101
+  - [x] ResNet152
+  - [x] VGG16
+  - [x] VGG19
+  - [x] SqueezeNet
+  - [x] MobileNet
+  - [x] InceptionV3
+  - [x] EfficientNet-b0
+  - [x] EfficientNet-b1
+  - [x] EfficientNet-b2
+  - [x] EfficientNet-b3
+  - [x] EfficientNet-b4
+  - [x] EfficientNet-b5
+  - [x] EfficientNet-b6
+  - [x] EfficientNet-b7
+  
 - Object Detection
-- Image Classification
+ 
 - Semantic segmentation
   - [x] FPN (**Runs on OpenVino**)
   - [x] LinkNet (**Runs on OpenVino**)
