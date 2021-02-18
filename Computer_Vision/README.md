@@ -1,4 +1,4 @@
-## Box of AI Tools
+## Box of AI Tools/Computer_Vision
 
 ### Type of Models
 - Image Classification (All models support OpenVino)
