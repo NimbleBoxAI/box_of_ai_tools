@@ -1,21 +1,22 @@
 ## Box of AI Tools/Natural_Language_Processing
 
 ### Type of Models
-- Document_Classification
+- **Document Classification**
   
-- Document_Summarization
+- **Document Summarization**
  
-- Machine_Translation
+- **Machine Translation**
   - [x] Mbart-large-cc25 (**Runs on OpenVino**)
   - [x] Opus-russian-english
   - [x] t5-large
   - [x] t5-small
-- NER
+  
+- **NER**
 
-- Senitment_Analysis
+- **Senitment Analysis**
 
-- Speech_to_Text
+- **Speech to Text**
 
-- Text_Classification
+- **Text Classification**
 
-- Text_to_Speech
+- **Text to Speech**
