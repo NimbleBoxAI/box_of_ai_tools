@@ -25,6 +25,7 @@ Find all the models [here](https://huggingface.co/models).
   - [x] t5-small
   
 - **NER**
+  - [x] bert-NER (**Runs on OpenVino**)
 
 - **Senitment Analysis**
 
