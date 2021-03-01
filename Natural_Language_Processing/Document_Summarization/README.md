@@ -1,6 +1,27 @@
 # Document Summarization
 
-We are using several summarizations model in the notebook:
+In order to run the model see the following usage:
+```
+usage: test_model.py [-h] [--model MODEL] [--hf HF] [--txtfile TXTFILE] [--logits_dict_key LOGITS_DICT_KEY]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --model MODEL         Path to an .xml file with a trained model.
+  --hf HF               name of the huggingface model (will be used for tokenisation)
+  --txtfile TXTFILE     file to read text from
+  --logits_dict_key LOGITS_DICT_KEY
+                        key to use for the output from the XML
+```
+
+So for a simple summarization task using the `gpt2` model run the following:
+```
+python3 test_model.py --model=<path/to/file.xml> \
+--hf=gpt2 \
+--txtfile=summ.en \
+--logits_dict_key=2893
+```
+
+We are using several summarizations model in this example:
 
 1. `google/pegasus-gigaword`: The pegasus model from Google is an encoder-only transformer where the training strategy is to remove entire sentences from the sequence using language masking. Here is a sample from the model (read more on the [blog](https://ai.googleblog.com/2020/06/pegasus-state-of-art-model-for.html)):
 ```
