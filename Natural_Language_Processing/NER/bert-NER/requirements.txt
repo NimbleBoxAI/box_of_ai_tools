@@ -1,0 +1,5 @@
+pip install networkx
+pip install defusedxml
+pip install onnx
+pip install test-generator
+pip install openvino
