@@ -1,6 +1,7 @@
 import os
 import nbox
 import json
+import time
 import torch 
 import warnings
 import subprocess
@@ -61,7 +62,7 @@ openvino_end_time = time.time()
 
 print("\nPyTorch out sum: ", torch.sum(torch_out).item())
 print("OpenVINO FP32 out sum:", "{:.12f}".format(np.sum(openvino_out['output'])))
-print("Time taken to run PyTorch inference: ", pytorch_end_time - pytorch_start_time)
+print("Time taken to run PyTorch inference: ", torch_end_time - torch_start_time)
 print("Time taken to run OpenVINO inference: ", openvino_end_time - openvino_start_time) 
 
 
@@ -76,7 +77,6 @@ with open("int8_template.json", 'r') as f:
 with open(int8_json_filename, 'w') as f:
     json.dump(data, f, indent=4)
 
-print(int8_json_filename + " created for conversion to int8 format.\n")
-
 # Int8 conversion script - some errors to iron out.
+# print(int8_json_filename + " created for conversion to int8 format.\n")
 # subprocess.run(['pot', '-c', int8_json_filename, '-d'])
