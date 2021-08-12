@@ -1,5 +1,3 @@
-# latency check for pytorch and openvino 
-
 import os
 import nbox
 import json
@@ -23,13 +21,14 @@ warnings.filterwarnings("ignore")
 
 export_model_name = "resnet18"
 
-# Change this to batch 1 otherwise it is going to be the same for openvino too.
 img = Image.open("cat.jpg")
 numpy_inp = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
 tensor_inp = transform(img)
 tensor_inp = torch.unsqueeze(tensor_inp, 0)
 model = nbox.load("resnet18", True).get_model().eval()
+torch_start_time = time.time()
 torch_out = model(tensor_inp)
+torch_end_time = time.time()
 
 torch.onnx.export(model,
                   tensor_inp,
@@ -56,10 +55,15 @@ model_bin = "./" + export_model_name + "/" + export_model_name + "_FP32.bin"
 ie = IECore()
 openvino_net = ie.read_network(model=model_xml, weights=model_bin)
 exec_net = ie.load_network(network=openvino_net, device_name="CPU", num_requests=4)
+openvino_start_time = time.time()
 openvino_out = exec_net.infer(inputs={"input": numpy_inp})
+openvino_end_time = time.time()
 
-print("\nTorch out sum: ", torch.sum(torch_out).item())
-print("Openvino FP32 out sum:", "{:.12f}".format(np.sum(openvino_out['output'])), "\n")
+print("\nPyTorch out sum: ", torch.sum(torch_out).item())
+print("OpenVINO FP32 out sum:", "{:.12f}".format(np.sum(openvino_out['output'])))
+print("Time taken to run PyTorch inference: ", pytorch_end_time - pytorch_start_time)
+print("Time taken to run OpenVINO inference: ", openvino_end_time - openvino_start_time) 
+
 
 int8_json_filename = export_model_name + ".json" 
 
@@ -74,4 +78,5 @@ with open(int8_json_filename, 'w') as f:
 
 print(int8_json_filename + " created for conversion to int8 format.\n")
 
-subprocess.run(['pot', '-c', int8_json_filename, '-d'])
+# Int8 conversion script - some errors to iron out.
+# subprocess.run(['pot', '-c', int8_json_filename, '-d'])
