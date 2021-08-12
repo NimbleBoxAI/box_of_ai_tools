@@ -1,3 +1,5 @@
+# latency check for pytorch and openvino 
+
 import os
 import nbox
 import json
@@ -6,15 +8,26 @@ import warnings
 import subprocess
 import torchvision
 import numpy as np
+from PIL import Image
+from torchvision import transforms
 from openvino.inference_engine import IECore
+
+transform = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    [0.485, 0.456, 0.406],
+                    [0.229, 0.224, 0.225])
+            ])
 
 warnings.filterwarnings("ignore")
 
 export_model_name = "resnet18"
 
 # Change this to batch 1 otherwise it is going to be the same for openvino too.
-tensor_inp = torch.rand(1, 3, 300, 300)
-numpy_inp = tensor_inp.detach().numpy()
+img = Image.open("cat.jpg")
+numpy_inp = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
+tensor_inp = transform(img)
+tensor_inp = torch.unsqueeze(tensor_inp, 0)
 model = nbox.load("resnet18", True).get_model().eval()
 torch_out = model(tensor_inp)
 
@@ -28,7 +41,9 @@ torch.onnx.export(model,
 subprocess.run(['python3', '/opt/intel/openvino_2021.4.582/deployment_tools/model_optimizer/mo.py',
                 '--input_model', export_model_name + '.onnx',
                 '--output_dir', export_model_name,
-                '--model_name', export_model_name + '_FP32'
+                '--model_name', export_model_name + '_FP32',
+                '--mean_values', '[123.675,116.28,103.53]',
+                '--scale_values', '[58.395,57.12,57.375]'
                 ])
 
 model_xml = "./" + export_model_name + "/" + export_model_name + "_FP32.xml"
