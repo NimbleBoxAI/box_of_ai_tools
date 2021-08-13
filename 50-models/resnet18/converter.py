@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore")
 # tensor_inp = transform(img)
 # tensor_inp = torch.unsqueeze(tensor_inp, 0)
 
-# Debug: the final output value does not match, need to take a look.
+# Debug: the final output value does not match with transforms, need to take a look.
 export_model_name = "resnet18"
 tensor_inp = torch.rand(1, 3, 224, 224)
 numpy_inp = tensor_inp.detach().numpy()
