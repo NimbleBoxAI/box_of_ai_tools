@@ -1,6 +1,7 @@
 torch==1.8.1
-torchvision==0.9.1
 openvino_dev==2021.4.0
 numpy==1.19.5
+torchvision==0.9.1
 nbox==0.1.1
 openvino==2021.4.0
+Pillow==8.3.1
