@@ -2,3 +2,6 @@
 *.bin
 *.xml
 *.onnx
+imagenet_val/*
+results/*
+resnet18/*

@@ -5,7 +5,53 @@
         "weights": "./resnet18/resnet18_FP32.bin"
     },
     "engine": {
-        "config": "./acc.yaml"
+        "launchers": [
+            {
+                "framework": "dlsdk",
+                "device": "CPU",
+                "adapter": "classification"
+            }
+        ],
+        "datasets": [
+            {
+                "name": "classification_dataset",
+                "data_source": "imagenet_val/val",
+                "annotation_conversion": {
+                    "converter": "imagenet",
+                    "annotation_file": "imagenet_val/val.txt"
+                },
+                "reader": "pillow_imread",
+                "preprocessing": [
+                    {
+                        "type": "bgr_to_rgb"
+                    },
+                    {
+                        "use_pillow": true,
+                        "type": "resize",
+                        "size": 256,
+                        "interpolation": "BILINEAR",
+                        "aspect_ratio_scale": "greater"
+                    },
+                    {
+                        "type": "crop",
+                        "size": 224,
+                        "use_pillow": true
+                    }
+                ],
+                "metrics": [
+                    {
+                        "name": "accuracy@top1",
+                        "type": "accuracy",
+                        "top_k": 1
+                    },
+                    {
+                        "name": "accuracy@top5",
+                        "type": "accuracy",
+                        "top_k": 5
+                    }
+                ]
+            }
+        ]
     },
     "compression": {
         "target_device": "ANY",

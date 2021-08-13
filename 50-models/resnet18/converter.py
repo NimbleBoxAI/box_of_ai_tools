@@ -12,7 +12,8 @@ from torchvision import transforms
 from openvino.inference_engine import IECore
 
 transform = transforms.Compose([
-                transforms.ToTensor(),
+                # Uncomment when using with a real image.
+                # transforms.ToTensor(),
                 transforms.Normalize(
                     [0.485, 0.456, 0.406],
                     [0.229, 0.224, 0.225])
@@ -20,12 +21,18 @@ transform = transforms.Compose([
 
 warnings.filterwarnings("ignore")
 
-export_model_name = "resnet18"
+# Code to check model conversion with a real image
+# img = Image.open("cat.jpg")
+# numpy_inp = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
+# tensor_inp = transform(img)
+# tensor_inp = torch.unsqueeze(tensor_inp, 0)
 
-img = Image.open("cat.jpg")
-numpy_inp = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
-tensor_inp = transform(img)
-tensor_inp = torch.unsqueeze(tensor_inp, 0)
+# Debug: the final output value does not match, need to take a look.
+export_model_name = "resnet18"
+tensor_inp = torch.rand(1, 3, 224, 224)
+numpy_inp = tensor_inp.detach().numpy()
+tensor_inp = transform(tensor_inp)
+
 model = nbox.load("resnet18", True).get_model().eval()
 torch_start_time = time.time()
 torch_out = model(tensor_inp)
@@ -49,6 +56,7 @@ subprocess.run(['python3', '/opt/intel/openvino_2021.4.582/deployment_tools/mode
 model_xml = "./" + export_model_name + "/" + export_model_name + "_FP32.xml"
 model_bin = "./" + export_model_name + "/" + export_model_name + "_FP32.bin"
 
+# Uncomment this to run benchmark tool.
 # print("Running benchmark on the generated FP32 model:\n")
 # subprocess.run(['python3', '/opt/intel/openvino_2021.4.582/deployment_tools/tools/benchmark_tool/benchmark_app.py',
 #                 '-m', model_xml])
@@ -78,5 +86,5 @@ with open(int8_json_filename, 'w') as f:
     json.dump(data, f, indent=4)
 
 # Int8 conversion script - some errors to iron out.
-# print(int8_json_filename + " created for conversion to int8 format.\n")
-# subprocess.run(['pot', '-c', int8_json_filename, '-d'])
+print(int8_json_filename + " created for conversion to int8 format.\n")
+subprocess.run(['pot', '-c', int8_json_filename, '-d'])
