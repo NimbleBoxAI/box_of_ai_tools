@@ -11,27 +11,32 @@ from PIL import Image
 from torchvision import transforms
 from openvino.inference_engine import IECore
 
+# Uncomment to check model conversion with a real image
+
 transform = transforms.Compose([
-                # Uncomment when using with a real image.
                 # transforms.ToTensor(),
                 transforms.Normalize(
                     [0.485, 0.456, 0.406],
                     [0.229, 0.224, 0.225])
             ])
 
-warnings.filterwarnings("ignore")
-
-# Code to check model conversion with a real image
 # img = Image.open("cat.jpg")
 # numpy_inp = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
 # tensor_inp = transform(img)
 # tensor_inp = torch.unsqueeze(tensor_inp, 0)
 
+warnings.filterwarnings("ignore")
+
+mean, std = torch.tensor([0.485, 0.456, 0.406]), torch.tensor([0.229, 0.224, 0.225])
+mean = torch.reshape(mean, (1, 3, 1, 1))
+std = torch.reshape(std, (1, 3, 1, 1))
+
 # Debug: the final output value does not match with transforms, need to take a look.
 export_model_name = "resnet18"
-tensor_inp = torch.rand(1, 3, 224, 224)
+tensor_inp = torch.ones(1, 3, 224, 224)
 numpy_inp = tensor_inp.detach().numpy()
 numpy_inp_int8 = tensor_inp.detach().numpy()
+# tensor_inp = (tensor_inp - mean) / std
 # tensor_inp = transform(tensor_inp)
 
 model = nbox.load("resnet18", True).get_model().eval()
@@ -49,7 +54,7 @@ torch.onnx.export(model,
 subprocess.run(['python3', '/opt/intel/openvino_2021.4.582/deployment_tools/model_optimizer/mo.py',
                 '--input_model', export_model_name + '.onnx',
                 '--output_dir', export_model_name,
-                '--model_name', export_model_name + '_FP32'
+                '--model_name', export_model_name + '_FP32'#,
                 # '--mean_values', '[123.675,116.28,103.53]',
                 # '--scale_values', '[58.395,57.12,57.375]'
                 ])
@@ -81,7 +86,7 @@ with open(int8_json_filename, 'w') as f:
     json.dump(data, f, indent=4)
 
 # Int8 conversion script - some errors to iron out.
-print(int8_json_filename + " created for conversion to int8 format.\n")
+print("\n", int8_json_filename + " created for conversion to int8 format.\n")
 subprocess.run(['pot', '-c', int8_json_filename, '-d'])
 
 model_xml_int8 = "./results/optimized" + "/" + export_model_name + ".xml"

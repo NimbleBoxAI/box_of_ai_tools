@@ -9,34 +9,27 @@
             {
                 "framework": "dlsdk",
                 "device": "CPU",
-                "adapter": "classification"
+                "adapter": {
+                    "type": "classification"
+                }
             }
         ],
         "datasets": [{
             "name": "classification_dataset",
             "data_source": "imagenet_val/val",
-            "annotation_conversion": {
-                  "converter": "imagenet",
-                  "annotation_file": "imagenet_val/val.txt"
-            },
-            "reader": "pillow_imread",
-            "preprocessing":[
-                {
-                    "type": "bgr_to_rgb"
-                },
-                {
-                    "use_pillow": true,
-                    "type": "resize",
-                    "size": 256,
-                    "interpolation": "BILINEAR",
-                    "aspect_ratio_scale": "greater"
-                },
-                {
-                    "type": "crop",
-                    "size": 224,
-                    "use_pillow": true
-                }
-            ],
+            "converter": "imagenet",
+            "annotation_file": "imagenet_val/val.txt",
+            "preprocessing": [
+                    {
+                        "type": "resize",
+                        "size": 256,
+                        "aspect_ratio_scale": "greater"
+                    },
+                    {
+                        "type": "crop",
+                        "size": 224
+                    }
+                ],
             "metrics": [
                 {
                     "name": "accuracy@top1",
@@ -52,18 +45,14 @@
         }]
     },
     "compression": {
-        "target_device": "ANY", 
-                                
+        "dump_intermediate_model": true,
         "algorithms": [
             {
-                "name": "DefaultQuantization", 
+                "name": "DefaultQuantization",
                 "params": {
-                    "preset": "performance", 
-                                             
-                                             
+                    "preset": "performance",
+                    "stat_subset_size": 300
 
-                    "stat_subset_size": 300  
-                                             
                 }
             }
         ]
