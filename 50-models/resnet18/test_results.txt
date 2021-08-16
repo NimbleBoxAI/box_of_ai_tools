@@ -27,3 +27,11 @@ Time taken to run PyTorch inference:  0.030779600143432617
 Time taken to run OpenVINO FP32 inference:  0.01315450668334961
 Time taken to run OpenVINO INT8 inference:  0.007700204849243164
 
+### Without mean and std, new config file ###
+
+PyTorch out sum:  0.006183624267578125
+OpenVINO FP32 out sum: 0.006187438965
+OpenVINO INT8 out sum: 2.141098022461
+Time taken to run PyTorch inference:  0.030289173126220703
+Time taken to run OpenVINO FP32 inference:  0.012213468551635742
+Time taken to run OpenVINO INT8 inference:  0.00777125358581543
