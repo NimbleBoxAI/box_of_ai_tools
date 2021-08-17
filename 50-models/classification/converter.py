@@ -11,7 +11,7 @@ tensor_inp = torch.ones(1, 3, 224, 224)
 numpy_inp = tensor_inp.detach().numpy()
 numpy_inp_int8 = tensor_inp.detach().numpy()
 
-model = nbox.load("resnet18", True).get_model().eval()
+model = nbox.load("torchvision/resnet18", True).get_model().eval()
 
 torch.onnx.export(model,
                   tensor_inp,

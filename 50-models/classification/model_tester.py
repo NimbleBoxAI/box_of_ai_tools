@@ -16,7 +16,7 @@ samples = 10
 img_list = glob("./assets/imagenet_val/val/*")
 img_list = random.sample(img_list, samples)
 
-# Empty lists to store outputs for 10 examples.
+# Empty lists to store output from samples.
 torch_out, openvino_out, openvino_out_int8 = [], [], []
 
 transform = transforms.Compose([
