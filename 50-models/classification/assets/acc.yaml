@@ -2,8 +2,8 @@ models:
   - name: resnet-18-pytorch
 
     launchers:
-      - framework: onnx_runtime
-        model: resnet18.onnx
+      - framework: dlsdk
+        model: ../resnet18/resnet18_FP32.xml
         adapter: classification
         inputs:
           - name: data
@@ -23,40 +23,21 @@ models:
           - type: resize
             size: 256
             aspect_ratio_scale: greater
-            use_pillow: true
-            interpolation: BILINEAR
 
           - type: crop
             size: 224
-            use_pillow: true
 
-          - type: normalization
-            std: 255
+        data_source: assets/imagenet_val/val
+         
+          converter: imagenet
 
-          - type: normalization
-            mean: (0.485, 0.456, 0.406)
-            std: (0.229, 0.224, 0.225)
+          annotations_file: assets/imagenet_val/val.txt
 
-            # Reference metric from PyTorch (pytorch v1.3.1, torchvision v0.4.2) top-1 69.76% top-5 89.08%
+        metrics:
+          - name: accurach@top1
+            type: accuracy
+            top_k: 1
 
-  - name: resnet-18-pytorch
-
-    launchers:
-      - framework: dlsdk
-        adapter: classification
-
-    datasets:
-      - name: imagenet_1000_classes
-        reader: pillow_imread
-
-        # Image channels must be swapped, because "pillow_imread" reads in RGB, but converted model expect BGR
-        preprocessing:
-          - type: resize
-            size: 256
-            aspect_ratio_scale: greater
-            use_pillow: True
-            interpolation: BILINEAR
-          - type: crop
-            size: 224
-            use_pillow: True
-          - type: rgb_to_bgr
+          - name: accurach@top5
+            type: accuracy
+            top_k: 5
