@@ -1,3 +1,4 @@
+import os
 import nbox
 import json
 import torch 
@@ -6,30 +7,35 @@ import subprocess
 
 warnings.filterwarnings("ignore")
 
-export_model_name = "resnet18"
+export_model_name = "efficientnet-b1"
+
+save_path = os.path.join("../../converted_models/classification", export_model_name)
+if not os.path.isdir(save_path):
+    os.mkdir(save_path)
+
 tensor_inp = torch.ones(1, 3, 224, 224)
 numpy_inp = tensor_inp.detach().numpy()
 numpy_inp_int8 = tensor_inp.detach().numpy()
 
-model = nbox.load("torchvision/resnet18", True).get_model().eval()
+model = nbox.load(export_model_name, True).get_model().eval()
 
 torch.onnx.export(model,
                   tensor_inp,
-                  export_model_name + '.onnx', 
+                  os.path.join(save_path ,export_model_name + '.onnx'), 
                   input_names=['input'],
                   output_names=['output'],
                   opset_version=12)
 
 subprocess.run(['python3', '/opt/intel/openvino_2021.4.582/deployment_tools/model_optimizer/mo.py',
-                '--input_model', export_model_name + '.onnx',
-                '--output_dir', export_model_name,
+                '--input_model', os.path.join(save_path, export_model_name + '.onnx'),
+                '--output_dir', os.path.join(save_path, export_model_name + '_FP32'),
                 '--model_name', export_model_name + '_FP32',
                 '--mean_values', '[123.675,116.28,103.53]',
                 '--scale_values', '[58.395,57.12,57.375]'
                 ])
 
-model_xml = "./" + export_model_name + "/" + export_model_name + "_FP32.xml"
-model_bin = "./" + export_model_name + "/" + export_model_name + "_FP32.bin"
+model_xml = save_path + "/" + export_model_name + "_FP32/" + export_model_name + "_FP32.xml"
+model_bin = save_path + "/" + export_model_name + "_FP32/" + export_model_name + "_FP32.bin"
 
 int8_json_filename = export_model_name + ".json" 
 
@@ -39,12 +45,13 @@ with open("assets/int8_template.json", 'r') as f:
     data["model"]["model"] = model_xml
     data["model"]["weights"] = model_bin
 
-with open(int8_json_filename, 'w') as f:
+with open(os.path.join(save_path, int8_json_filename), 'w') as f:
     json.dump(data, f, indent=4)
 
 # Int8 conversion script - some errors to iron out.
 print("\n", int8_json_filename + " created for conversion to int8 format.\n")
-subprocess.run(['pot', '-c', int8_json_filename, '-d'])
+subprocess.run(['pot', '-c', os.path.join(save_path, int8_json_filename),
+                '--output-dir', os.path.join(save_path, export_model_name + '_INT8'), '-d'])
 
-model_xml_int8 = "./results/optimized" + "/" + export_model_name + ".xml"
-model_bin_int8 = "./results/optimized" + "/" + export_model_name + ".bin"
+print("Removing the onnx file used for model conversion.")
+os.remove(os.path.join(save_path, export_model_name + ".onnx"))

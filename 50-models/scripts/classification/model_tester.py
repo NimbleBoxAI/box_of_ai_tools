@@ -1,6 +1,7 @@
 import nbox
 import time
 import torch
+import os
 import random
 import warnings
 import subprocess
@@ -11,6 +12,8 @@ from glob import glob
 from torchvision import transforms
 from openvino.inference_engine import IECore
 
+export_model_name = "resnet18"
+save_path = os.path.join("../../converted_models/classification", export_model_name)
 warnings.filterwarnings("ignore")
 samples = 10
 img_list = glob("./assets/imagenet_val/val/*")
@@ -26,18 +29,17 @@ transform = transforms.Compose([
                   [0.229, 0.224, 0.225])
           ])
 
-export_model_name = "resnet18"
-model = nbox.load("resnet18", True).get_model().eval()
+model = nbox.load("torchvision/resnet18", True).get_model().eval()
 
-model_xml = "./" + export_model_name + "/" + export_model_name + "_FP32.xml"
-model_bin = "./" + export_model_name + "/" + export_model_name + "_FP32.bin"
+model_xml = save_path + "/" + export_model_name + "_FP32/" + export_model_name + "_FP32.xml"
+model_bin = save_path + "/" + export_model_name + "_FP32/" + export_model_name + "_FP32.bin"
 
 ie = IECore()
 openvino_net = ie.read_network(model=model_xml, weights=model_bin)
 exec_net = ie.load_network(network=openvino_net, device_name="CPU", num_requests=4)
 
-model_xml_int8 = "./results/optimized" + "/" + export_model_name + ".xml"
-model_bin_int8 = "./results/optimized" + "/" + export_model_name + ".bin"
+model_xml_int8 = save_path + "/" + export_model_name + "_INT8/optimized/" + export_model_name + ".xml"
+model_bin_int8 = save_path + "/" + export_model_name + "_INT8/optimized/" + export_model_name + ".bin"
 
 ie_int8 = IECore()
 openvino_net_int8 = ie_int8.read_network(model=model_xml_int8, weights=model_bin_int8)
