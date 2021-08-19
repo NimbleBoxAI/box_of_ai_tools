@@ -7,7 +7,7 @@ import subprocess
 
 warnings.filterwarnings("ignore")
 
-export_model_name = "efficientnet-b1"
+export_model_name = "efficientnet-b7"
 
 save_path = os.path.join("../../converted_models/classification", export_model_name)
 if not os.path.isdir(save_path):
@@ -17,7 +17,10 @@ tensor_inp = torch.ones(1, 3, 224, 224)
 numpy_inp = tensor_inp.detach().numpy()
 numpy_inp_int8 = tensor_inp.detach().numpy()
 
-model = nbox.load(export_model_name, True).get_model().eval()
+model = nbox.load("efficientnet_pytorch/" + export_model_name, pretrained=True).get_model().eval()
+
+# Only use with efficientnets
+model.set_swish(memory_efficient=False)
 
 torch.onnx.export(model,
                   tensor_inp,
