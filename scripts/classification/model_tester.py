@@ -71,6 +71,8 @@ for img_path in img_list:
 print("\nPyTorch's argmax index for 10 examples: ", torch_out)
 print("OpenVINO FP32 argmax index for 10 examples:", openvino_out)
 print("OpenVINO INT8 argmax index for 10 examples:", openvino_out_int8)
+
+# Todo: Make time average over samples.
 print("Time taken to run PyTorch inference: ", torch_end_time - torch_start_time)
 print("Time taken to run OpenVINO FP32 inference: ", openvino_end_time - openvino_start_time) 
 print("Time taken to run OpenVINO INT8 inference: ", openvino_int8_end_time - openvino_int8_start_time)
