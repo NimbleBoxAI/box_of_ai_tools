@@ -12,11 +12,11 @@ from glob import glob
 from torchvision import transforms
 from openvino.inference_engine import IECore
 
-export_model_name = "resnet18"
-save_path = os.path.join("../../converted_models/classification", export_model_name)
+export_model_name = "deeplabv3_resnet50"
+save_path = os.path.join("../../converted_models/semantic_seg", export_model_name)
 warnings.filterwarnings("ignore")
-samples = 10
-img_list = glob("./assets/imagenet_val/val/*")
+samples = 1
+img_list = glob("./assets/coco_2017/val2017/*")
 img_list = random.sample(img_list, samples)
 
 # Empty lists to store output from samples.
@@ -29,7 +29,7 @@ transform = transforms.Compose([
                   [0.229, 0.224, 0.225])
           ])
 
-model = nbox.load("torchvision/resnet18", True).get_model().eval()
+model = nbox.load("torchvision/" + export_model_name, pretrained=True).get_model().eval()
 
 model_xml = save_path + "/" + export_model_name + "_FP32/" + export_model_name + "_FP32.xml"
 model_bin = save_path + "/" + export_model_name + "_FP32/" + export_model_name + "_FP32.bin"
@@ -47,7 +47,7 @@ exec_net_int8 = ie_int8.load_network(network=openvino_net_int8, device_name="CPU
 
 for img_path in img_list:
   img = Image.open(img_path)
-  img = img.resize((224, 224))
+  img = img.resize((520, 520))
   numpy_inp = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
   numpy_inp_int8 = np.expand_dims(np.transpose((np.array(img)), (2, 0, 1)), axis=0)
   tensor_inp = transform(img)
@@ -56,21 +56,27 @@ for img_path in img_list:
   torch_start_time = time.time()
   pt_out = model(tensor_inp)
   torch_end_time = time.time()
-  torch_out.append(torch.argmax(pt_out).item())
+  torch_out.append(pt_out)
+  # torch_out.append(torch.argmax(pt_out).item())
 
   openvino_start_time = time.time()
   ov_out = exec_net.infer(inputs={"input": numpy_inp})
   openvino_end_time = time.time()
-  openvino_out.append(np.argmax(ov_out['output']))
+  openvino_out.append(ov_out['output'])
+  # openvino_out.append(np.argmax(ov_out['output']))
 
   openvino_int8_start_time = time.time()
   ov_out_int8 = exec_net_int8.infer(inputs={"input": numpy_inp_int8})
   openvino_int8_end_time = time.time()
-  openvino_out_int8.append(np.argmax(ov_out_int8['output']))
+  openvino_out_int8.append(ov_out_int8['output'])
+  # openvino_out_int8.append(np.argmax(ov_out_int8['output']))
 
-print("\nPyTorch's argmax index for 10 examples: ", torch_out)
-print("OpenVINO FP32 argmax index for 10 examples:", openvino_out)
-print("OpenVINO INT8 argmax index for 10 examples:", openvino_out_int8)
+# The outputs are very similar and so the conversion is working
+# Need to find a way to actually compare semantic seg outputs. 
+
+# print("\nPyTorch's argmax index for 10 examples: ", torch_out)
+# print("OpenVINO FP32 argmax index for 10 examples:", openvino_out)
+# print("OpenVINO INT8 argmax index for 10 examples:", openvino_out_int8)
 print("Time taken to run PyTorch inference: ", torch_end_time - torch_start_time)
 print("Time taken to run OpenVINO FP32 inference: ", openvino_end_time - openvino_start_time) 
 print("Time taken to run OpenVINO INT8 inference: ", openvino_int8_end_time - openvino_int8_start_time)

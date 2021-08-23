@@ -29,15 +29,7 @@
                         "type": "crop",
                         "size": 513
                     }
-                ],
-            "metrics": [
-                {
-                    "type": "coco_orig_segm_precision"
-                },
-                {
-                    "type": "coco_orig_precision"
-                }
-            ]
+                ]
         }]
     },
     "compression": {
