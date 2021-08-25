@@ -1,7 +1,8 @@
-*.mapping
+*.mappingDeepLabV3Plus-Pytorch
 *.bin
 *.xml
 *.onnx
 assets/imagenet_val/*
 results/*
 resnet18/*
+DeepLabV3Plus-Pytorch/*
