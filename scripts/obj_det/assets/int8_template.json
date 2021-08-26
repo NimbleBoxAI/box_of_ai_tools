@@ -1,0 +1,48 @@
+{
+    "model": {
+        "model_name": "se_resnet50",
+        "model": "<MODEL_PATH>",
+        "weights": "<PATH_TO_WEIGHTS>"
+    },
+    "engine": {
+        "launchers": [
+            {
+                "framework": "dlsdk",
+                "device": "CPU",
+                "adapter": {
+                    "type": "mask_rcnn"
+                }
+            }
+        ],
+        "datasets": [{
+            "name": "object_detection_dataset",
+            "data_source": "./assets/coco_2017/val2017",
+            "converter": "mscoco_detection",
+            "annotation_file": "./assets/coco_2017/annotations/instances_val2017.json",
+            "preprocessing": [
+                    {
+                        "type": "resize",
+                        "size": 513,
+                        "aspect_ratio_scale": "fit_to_window"
+                    },
+                    {
+                        "type": "crop",
+                        "size": 513
+                    }
+                ]
+        }]
+    },
+    "compression": {
+        "dump_intermediate_model": true,
+        "algorithms": [
+            {
+                "name": "DefaultQuantization",
+                "params": {
+                    "preset": "performance",
+                    "stat_subset_size": 300
+
+                }
+            }
+        ]
+    }
+}
