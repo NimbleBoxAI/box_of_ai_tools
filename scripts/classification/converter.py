@@ -8,8 +8,8 @@ import pretrainedmodels as pm
 
 warnings.filterwarnings("ignore")
 
-model_list = ["inceptionv4"]
-size = [(1, 3, 299, 299)]
+model_list = ["resnet18"]
+size = [(1, 3, 224, 224)]
 
 for export_model_name, inp_size in zip(model_list, size):
     print("* "*20, export_model_name, "* "*20)
@@ -21,7 +21,7 @@ for export_model_name, inp_size in zip(model_list, size):
     numpy_inp = tensor_inp.detach().numpy()
     numpy_inp_int8 = tensor_inp.detach().numpy()
 
-    model = pm.__dict__[export_model_name](num_classes=1000, pretrained="imagenet")
+    model = nbox.load("torchvision/" + export_model_name, pretrained=True).get_model()
 
     # Only use with efficientnets
     # model.set_swish(memory_efficient=False)
